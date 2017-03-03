@@ -29,18 +29,18 @@ import dp.vmarkeev.moviedb.ui.views.ItemOffsetDecorationGrid;
 
 public class MainActivity extends BaseActivity implements MainView {
 
-    // The minimum number of items remaining before we should loading more.
+    // The minimum number of items remaining before we should mLoading more.
     private static final int VISIBLE_THRESHOLD = 5;
     private boolean mIsLoading = true;
     private int PAGE = 1;
-    private int moviesType;
+    private int mMoviesType;
 
-    private TextView noResults;
-    private ImageView noConnection;
+    private TextView mNoResults;
+    private ImageView mNoConnection;
 
     private RecyclerView mRvMovies;
-    private ProgressBar loading;
-    private MovieAdapter adapter;
+    private ProgressBar mLoading;
+    private MovieAdapter mAdapter;
     private GridLayoutManager mLayoutManager;
 
     private MainPresenterImpl mPresenter;
@@ -50,9 +50,9 @@ public class MainActivity extends BaseActivity implements MainView {
         super.onCreate(savedInstanceState);
 
         initLinearLayoutManager();
-        adapter = new MovieAdapter(this);
-        mRvMovies.setAdapter(adapter);
-        moviesType = Consts.MovieConstant.POPULAR;
+        mAdapter = new MovieAdapter(this);
+        mRvMovies.setAdapter(mAdapter);
+        mMoviesType = Consts.MovieConstant.POPULAR;
         getMovies();
         setMainTitle();
     }
@@ -70,33 +70,33 @@ public class MainActivity extends BaseActivity implements MainView {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (noConnection != null) {
-            noConnection.setVisibility(View.GONE);
+        if (mNoConnection != null) {
+            mNoConnection.setVisibility(View.GONE);
         }
-        if (noResults != null) {
-            noResults.setVisibility(View.GONE);
+        if (mNoResults != null) {
+            mNoResults.setVisibility(View.GONE);
         }
-        loading.setVisibility(View.VISIBLE);
+        mLoading.setVisibility(View.VISIBLE);
         switch (item.getItemId()) {
             case R.id.action_show_popular:
-                if (moviesType != Consts.MovieConstant.POPULAR) {
-                    moviesType = Consts.MovieConstant.POPULAR;
+                if (mMoviesType != Consts.MovieConstant.POPULAR) {
+                    mMoviesType = Consts.MovieConstant.POPULAR;
                     PAGE = 1;
                     getMovies();
                     setMainTitle();
                 }
                 return true;
             case R.id.action_show_top_rated:
-                if (moviesType != Consts.MovieConstant.TOP_RATED) {
-                    moviesType = Consts.MovieConstant.TOP_RATED;
+                if (mMoviesType != Consts.MovieConstant.TOP_RATED) {
+                    mMoviesType = Consts.MovieConstant.TOP_RATED;
                     PAGE = 1;
                     getMovies();
                     setMainTitle();
                 }
                 return true;
             case R.id.action_show_favorites:
-                if (moviesType != Consts.MovieConstant.FAVORITES) {
-                    moviesType = Consts.MovieConstant.FAVORITES;
+                if (mMoviesType != Consts.MovieConstant.FAVORITES) {
+                    mMoviesType = Consts.MovieConstant.FAVORITES;
                     getMovies();
                     setMainTitle();
                 }
@@ -122,7 +122,7 @@ public class MainActivity extends BaseActivity implements MainView {
     @Override
     protected void initViews() {
         mRvMovies = (RecyclerView) findViewById(R.id.rv_movie);
-        loading = (ProgressBar) findViewById(android.R.id.empty);
+        mLoading = (ProgressBar) findViewById(android.R.id.empty);
     }
 
     @Override
@@ -146,11 +146,11 @@ public class MainActivity extends BaseActivity implements MainView {
     }
 
     private void getMovies() {
-        mPresenter.getMovie(context, PAGE, moviesType);
+        mPresenter.getMovie(context, PAGE, mMoviesType);
     }
 
     private void setMainTitle() {
-        switch (moviesType) {
+        switch (mMoviesType) {
             case Consts.MovieConstant.POPULAR:
                 setTitle(R.string.mn_title_popular_movies);
                 break;
@@ -165,7 +165,7 @@ public class MainActivity extends BaseActivity implements MainView {
 
     @Override
     public void onError(String error) {
-        loading.setVisibility(View.GONE);
+        mLoading.setVisibility(View.GONE);
         if (TextUtils.isEmpty(error)) {
             checkConnectivity();
         } else {
@@ -174,26 +174,26 @@ public class MainActivity extends BaseActivity implements MainView {
     }
 
     private void checkConnectivity() {
-        if (noConnection == null) {
+        if (mNoConnection == null) {
             final ViewStub stub = (ViewStub) findViewById(R.id.stub_no_connection);
-            noConnection = (ImageView) stub.inflate();
-            noConnection.setOnClickListener(new View.OnClickListener() {
+            mNoConnection = (ImageView) stub.inflate();
+            mNoConnection.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     getMovies();
                 }
             });
         } else {
-            noConnection.setVisibility(View.VISIBLE);
+            mNoConnection.setVisibility(View.VISIBLE);
         }
     }
 
     private void setNoResultsVisibility(int visibility, String error) {
         if (visibility == View.VISIBLE) {
-            if (noResults == null) {
-                noResults = (TextView) ((ViewStub)
+            if (mNoResults == null) {
+                mNoResults = (TextView) ((ViewStub)
                         findViewById(R.id.stub_no_search_results)).inflate();
-                noResults.setOnClickListener(new View.OnClickListener() {
+                mNoResults.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         PAGE = 1;
@@ -211,48 +211,48 @@ public class MainActivity extends BaseActivity implements MainView {
                     message.indexOf('“') + 1,
                     message.length() - 1,
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            noResults.setText(ssb);
+            mNoResults.setText(ssb);
         }
-        if (noResults != null) {
-            noResults.setVisibility(visibility);
+        if (mNoResults != null) {
+            mNoResults.setVisibility(visibility);
         }
     }
 
     @Override
     public void onMovieResult(MovieModel model, boolean isLoading) {
         mIsLoading = isLoading;
-        loading.setVisibility(View.GONE);
-        if (noConnection != null) {
-            noConnection.setVisibility(View.GONE);
+        mLoading.setVisibility(View.GONE);
+        if (mNoConnection != null) {
+            mNoConnection.setVisibility(View.GONE);
         }
-        if (noResults != null) {
-            noResults.setVisibility(View.GONE);
+        if (mNoResults != null) {
+            mNoResults.setVisibility(View.GONE);
         }
-        adapter.refresh(model.getResults());
+        mAdapter.refresh(model.getResults());
     }
 
     @Override
     public void onLoadMoreListener(MovieModel model, boolean isLoading) {
         mIsLoading = isLoading;
-        if (noConnection != null) {
-            noConnection.setVisibility(View.GONE);
+        if (mNoConnection != null) {
+            mNoConnection.setVisibility(View.GONE);
         }
-        adapter.addAndUpdate(model.getResults());
+        mAdapter.addAndUpdate(model.getResults());
     }
 
     @Override
     public void onFavoritesListener(MovieModel model) {
-        loading.setVisibility(View.GONE);
-        if (noConnection != null) {
-            noConnection.setVisibility(View.GONE);
+        mLoading.setVisibility(View.GONE);
+        if (mNoConnection != null) {
+            mNoConnection.setVisibility(View.GONE);
         }
-        if (noResults != null) {
-            noResults.setVisibility(View.GONE);
+        if (mNoResults != null) {
+            mNoResults.setVisibility(View.GONE);
         }
         if (model.getResults().size() > 0) {
-            adapter.refresh(model.getResults());
+            mAdapter.refresh(model.getResults());
         } else {
-            adapter.clearData();
+            mAdapter.clearData();
             setNoResultsVisibility(View.VISIBLE, getString(R.string.err_no_favorite_movies));
         }
     }

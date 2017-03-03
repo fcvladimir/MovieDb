@@ -19,11 +19,11 @@ import dp.vmarkeev.moviedb.models.trailers.Results;
 public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHolder> {
 
     private List<Results> mItems;
-    private OnTrailerClickListener onTrailerClickListener;
+    private OnTrailerClickListener mOnTrailerClickListener;
 
     public TrailerAdapter(OnTrailerClickListener onTrailerClickListener) {
         mItems = new ArrayList<>();
-        this.onTrailerClickListener = onTrailerClickListener;
+        mOnTrailerClickListener = onTrailerClickListener;
     }
 
     @Override
@@ -35,12 +35,12 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
-        holder.iv_movie_trailer.setText(mItems.get(position).getName());
+        holder.mIvMovieTrailer.setText(mItems.get(position).getName());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onTrailerClickListener.onTrailerClick(mItems.get(position).getKey());
+                mOnTrailerClickListener.onTrailerClick(mItems.get(position).getKey());
             }
         });
     }
@@ -68,11 +68,11 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
      */
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView iv_movie_trailer;
+        TextView mIvMovieTrailer;
 
         private ViewHolder(View itemView) {
             super(itemView);
-            iv_movie_trailer = (TextView) itemView.findViewById(R.id.iv_movie_trailer);
+            mIvMovieTrailer = (TextView) itemView.findViewById(R.id.iv_movie_trailer);
         }
     }
 }

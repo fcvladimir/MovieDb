@@ -38,22 +38,22 @@ import dp.vmarkeev.moviedb.utils.DialogUtils;
 
 public class DetailActivity extends BaseActivity implements DetailView, View.OnClickListener, TrailerAdapter.OnTrailerClickListener {
 
-    private String id;
-    private DetailModel detailModel;
+    private String mId;
+    private DetailModel mDetailModel;
 
-    private ImageView noConnection;
-    private TextView noResults;
-    private ProgressBar loading;
-    private ScrollView sv_movie_detail;
+    private ImageView mNoConnection;
+    private TextView mNoResults;
+    private ProgressBar mLoading;
+    private ScrollView mSvMovieDetail;
 
-    private TextView tv_movie_detail_name;
-    private TextView tv_movie_detail_synopsis;
-    private TextView tv_movie_detail_year;
-    private TextView tv_movie_detail_duration;
-    private TextView tv_movie_detail_rating;
-    private TextView tv_movie_detail_check_trailers;
-    private ImageView iv_movie_detail_poster;
-    private RecyclerView rv_movie_detail_trailer;
+    private TextView mTvMovieDetailName;
+    private TextView mTvMovieDetailSynopsis;
+    private TextView mTvMovieDetailYear;
+    private TextView mTvMovieDetailDuration;
+    private TextView mTvMovieDetailRating;
+    private TextView mTvMovieDetailCheckTrailers;
+    private ImageView mIvMovieDetailPoster;
+    private RecyclerView mRvMovieDetailTrailer;
 
     private DetailPresenterImpl mPresenter;
 
@@ -95,7 +95,7 @@ public class DetailActivity extends BaseActivity implements DetailView, View.OnC
     }
 
     private void getDataFromIntent() {
-        id = getIntent().getStringExtra(Consts.IntentConstant.ID);
+        mId = getIntent().getStringExtra(Consts.IntentConstant.ID);
     }
 
     @Override
@@ -105,32 +105,32 @@ public class DetailActivity extends BaseActivity implements DetailView, View.OnC
 
     @Override
     protected void initViews() {
-        loading = (ProgressBar) findViewById(android.R.id.empty);
-        sv_movie_detail = (ScrollView) findViewById(R.id.sv_movie_detail);
-        tv_movie_detail_name = (TextView) findViewById(R.id.tv_movie_detail_name);
-        tv_movie_detail_synopsis = (TextView) findViewById(R.id.tv_movie_detail_synopsis);
-        iv_movie_detail_poster = (ImageView) findViewById(R.id.iv_movie_detail_poster);
-        tv_movie_detail_year = (TextView) findViewById(R.id.tv_movie_detail_year);
-        tv_movie_detail_duration = (TextView) findViewById(R.id.tv_movie_detail_duration);
-        tv_movie_detail_rating = (TextView) findViewById(R.id.tv_movie_detail_rating);
-        tv_movie_detail_check_trailers = (TextView) findViewById(R.id.tv_movie_detail_check_trailers);
-        rv_movie_detail_trailer = (RecyclerView) findViewById(R.id.rv_movie_detail_trailer);
+        mLoading = (ProgressBar) findViewById(android.R.id.empty);
+        mSvMovieDetail = (ScrollView) findViewById(R.id.sv_movie_detail);
+        mTvMovieDetailName = (TextView) findViewById(R.id.tv_movie_detail_name);
+        mTvMovieDetailSynopsis = (TextView) findViewById(R.id.tv_movie_detail_synopsis);
+        mIvMovieDetailPoster = (ImageView) findViewById(R.id.iv_movie_detail_poster);
+        mTvMovieDetailYear = (TextView) findViewById(R.id.tv_movie_detail_year);
+        mTvMovieDetailDuration = (TextView) findViewById(R.id.tv_movie_detail_duration);
+        mTvMovieDetailRating = (TextView) findViewById(R.id.tv_movie_detail_rating);
+        mTvMovieDetailCheckTrailers = (TextView) findViewById(R.id.tv_movie_detail_check_trailers);
+        mRvMovieDetailTrailer = (RecyclerView) findViewById(R.id.rv_movie_detail_trailer);
     }
 
     @Override
     protected void initListeners() {
-        tv_movie_detail_check_trailers.setOnClickListener(this);
+        mTvMovieDetailCheckTrailers.setOnClickListener(this);
         findViewById(R.id.btn_movie_detail_mark_as_favorite).setOnClickListener(this);
     }
 
     private void getDetail() {
-        mPresenter.getDetails(context, id);
+        mPresenter.getDetails(context, mId);
     }
 
     @Override
     public void onError(String error) {
-        loading.setVisibility(View.GONE);
-        if (sv_movie_detail.getVisibility() == View.GONE) {
+        mLoading.setVisibility(View.GONE);
+        if (mSvMovieDetail.getVisibility() == View.GONE) {
             if (TextUtils.isEmpty(error)) {
                 checkConnectivity();
             } else {
@@ -146,14 +146,14 @@ public class DetailActivity extends BaseActivity implements DetailView, View.OnC
     }
 
     private void checkConnectivity() {
-        if (noConnection == null) {
+        if (mNoConnection == null) {
             final ViewStub stub = (ViewStub) findViewById(R.id.stub_no_connection);
-            noConnection = (ImageView) stub.inflate();
-            noConnection.setOnClickListener(new View.OnClickListener() {
+            mNoConnection = (ImageView) stub.inflate();
+            mNoConnection.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     getDetail();
-                    loading.setVisibility(View.VISIBLE);
+                    mLoading.setVisibility(View.VISIBLE);
                 }
             });
         }
@@ -161,31 +161,31 @@ public class DetailActivity extends BaseActivity implements DetailView, View.OnC
 
     @Override
     public void onDetailsResult(DetailModel model) {
-        sv_movie_detail.setVisibility(View.VISIBLE);
-        if (noConnection != null) {
-            noConnection.setVisibility(View.GONE);
+        mSvMovieDetail.setVisibility(View.VISIBLE);
+        if (mNoConnection != null) {
+            mNoConnection.setVisibility(View.GONE);
         }
-        if (noResults != null) {
-            noResults.setVisibility(View.GONE);
+        if (mNoResults != null) {
+            mNoResults.setVisibility(View.GONE);
         }
-        loading.setVisibility(View.GONE);
+        mLoading.setVisibility(View.GONE);
         fillViews(model);
     }
 
     @Override
     public void onTrailersResult(TrailerModel model) {
-        tv_movie_detail_check_trailers.setVisibility(View.GONE);
+        mTvMovieDetailCheckTrailers.setVisibility(View.GONE);
         initLinearLayoutManager();
         TrailerAdapter trailerAdapter = new TrailerAdapter(this);
-        rv_movie_detail_trailer.setHasFixedSize(true);
-        rv_movie_detail_trailer.setAdapter(trailerAdapter);
+        mRvMovieDetailTrailer.setHasFixedSize(true);
+        mRvMovieDetailTrailer.setAdapter(trailerAdapter);
         trailerAdapter.refresh(model.getResults());
     }
 
     public void initLinearLayoutManager() {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(context);
-        rv_movie_detail_trailer.setLayoutManager(mLayoutManager);
-        rv_movie_detail_trailer.addItemDecoration(new DividerItemDecoration(this));
+        mRvMovieDetailTrailer.setLayoutManager(mLayoutManager);
+        mRvMovieDetailTrailer.addItemDecoration(new DividerItemDecoration(this));
     }
 
     @Override
@@ -194,28 +194,28 @@ public class DetailActivity extends BaseActivity implements DetailView, View.OnC
     }
 
     private void fillViews(DetailModel model) {
-        detailModel = model;
-        tv_movie_detail_name.setText(model.getTitle());
-        tv_movie_detail_synopsis.setText(model.getOverview());
-        tv_movie_detail_year.setText(model.getRelease_date());
-        tv_movie_detail_duration.setText(getString(R.string.dt_movie_detail_duration, model.getRuntime()));
-        tv_movie_detail_rating.setText(getString(R.string.dt_movie_detail_vote, model.getVote_average()));
+        mDetailModel = model;
+        mTvMovieDetailName.setText(model.getTitle());
+        mTvMovieDetailSynopsis.setText(model.getOverview());
+        mTvMovieDetailYear.setText(model.getRelease_date());
+        mTvMovieDetailDuration.setText(getString(R.string.dt_movie_detail_duration, model.getRuntime()));
+        mTvMovieDetailRating.setText(getString(R.string.dt_movie_detail_vote, model.getVote_average()));
 
         Picasso.with(context)
                 .load(Config.IMAGE_URL + model.getPoster_path())
-                .into(iv_movie_detail_poster);
+                .into(mIvMovieDetailPoster);
     }
 
     private void setNoResultsVisibility(int visibility, String error) {
         if (visibility == View.VISIBLE) {
-            if (noResults == null) {
-                noResults = (TextView) ((ViewStub)
+            if (mNoResults == null) {
+                mNoResults = (TextView) ((ViewStub)
                         findViewById(R.id.stub_no_search_results)).inflate();
-                noResults.setOnClickListener(new View.OnClickListener() {
+                mNoResults.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         getDetail();
-                        loading.setVisibility(View.VISIBLE);
+                        mLoading.setVisibility(View.VISIBLE);
                     }
                 });
             }
@@ -229,10 +229,10 @@ public class DetailActivity extends BaseActivity implements DetailView, View.OnC
                     message.indexOf('“') + 1,
                     message.length() - 1,
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            noResults.setText(ssb);
+            mNoResults.setText(ssb);
         }
-        if (noResults != null) {
-            noResults.setVisibility(visibility);
+        if (mNoResults != null) {
+            mNoResults.setVisibility(visibility);
         }
     }
 
@@ -246,11 +246,11 @@ public class DetailActivity extends BaseActivity implements DetailView, View.OnC
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_movie_detail_check_trailers:
-                mPresenter.getTrailers(context, id);
+                mPresenter.getTrailers(context, mId);
                 break;
             case R.id.btn_movie_detail_mark_as_favorite:
                 DBHelper dbHelper = new DBHelper(context);
-                boolean isAdded = dbHelper.addMovie(id, detailModel.getPoster_path());
+                boolean isAdded = dbHelper.addMovie(mId, mDetailModel.getPoster_path());
                 DialogUtils.show(context, isAdded ? R.string.dt_movie_detail_mark_as_favorite_success : R.string.dt_movie_detail_mark_as_favorite_failure);
                 break;
         }
