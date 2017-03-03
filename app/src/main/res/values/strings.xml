@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">MovieDb</string>
+
+    <string name="api_key">a09b9e21fe8bdbd2ad6f77bab096aa88</string>
+
+    <string name="transition_pare_1" translatable="false">transition pare 1</string>
+    <string name="transition_pare_2" translatable="false">transition pare 2</string>
+
+    <!--Errors-->
+    <string name="err_no_internet" translatable="false">Unable to resolve host</string>
+    <string name="no_results">No results</string>
+    <string name="err_no_internet_error">No internet, please check connection</string>
+    <string name="err_no_favorite_movies">No favorite movies found</string>
+
+    <!--Action menu-->
+    <string name="action_popular_movies">Popular movies</string>
+    <string name="action_top_rated_movies">Top rated movies</string>
+    <string name="action_favorites_movies">Favorites movies</string>
+    <string name="action_detail_1">Menu 1</string>
+    <string name="action_detail_2">Menu 2</string>
+    <string name="action_detail_3">Menu 3</string>
+
+    <!--Main activity-->
+    <string name="mn_title_popular_movies">Popular movies</string>
+    <string name="mn_title_top_rated_movies">Top rated movies</string>
+    <string name="mn_title_favorites_movies">Favorites movies</string>
+
+    <!--Detail activity-->
+    <string name="dt_title_movie_detail">MovieDetail</string>
+    <string name="dt_movie_detail_trailers">Trailers:</string>
+    <string name="dt_movie_detail_favorites_btn_text">Mark as favorite</string>
+    <string name="dt_movie_detail_duration">%1$s min</string>
+    <string name="dt_movie_detail_vote">%1$s/10</string>
+    <string name="dt_movie_detail_check_trailers"><u>Check trailers</u></string>
+    <string name="dt_movie_detail_mark_as_favorite_success">Movie marked as favorite</string>
+    <string name="dt_movie_detail_mark_as_favorite_failure">Movie already marked as favorite</string>
+</resources>
